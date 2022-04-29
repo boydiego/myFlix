@@ -49,6 +49,12 @@ app.get('/movies', (req, res) => {
   res.json(topMovies);
 });
 
+// Error handling
+app.use((err, req, res, next) => {
+  console.log(err.stack);
+  res.status(500).send('Something broke!');
+});
+
 // listen for request
 app.listen(8080, () => {
   console.log('App is listening on port 8080');
