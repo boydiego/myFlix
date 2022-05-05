@@ -1,4 +1,6 @@
 const express = require('express'),
+  bodyParser = require('body-parser'),
+  uuid = require('uuid'),
   morgan = require('morgan');
 
 const app = express();
@@ -33,6 +35,19 @@ let topMovies = [
   },
   {
     title: 'Movie 10',
+  },
+];
+
+let users = [
+  {
+    id: 1,
+    name: 'Diego',
+    favoriteMovies: ['Movie 3'],
+  },
+  {
+    id: 2,
+    name: 'Natu',
+    favoriteMovies: ['Movie 1', 'Movie 5'],
   },
 ];
 
