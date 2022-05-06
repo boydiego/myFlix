@@ -9,12 +9,130 @@
 </head>
 
 <body>
-  <h1>myFlix</h1>
-  <p class="objective">
-    The web application will provide users with access to information about different movies, directors, and genres.
-    <br>
-    Users will be able to sign up, update their personal information, and create a list of their favorite movies.
-  </p>
+  <div class="description-wrapper">
+    <h1>myFlix</h1>
+    <p class="objective">
+      The web application will provide users with access to information about different movies, directors, and genres.
+      <br>
+      Users will be able to sign up, update their personal information, and create a list of their favorite movies.
+    </p>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Business Logic</th>
+          <th>URL</th>
+          <th>HTTP Method</th>
+          <th>Request body data format</th>
+          <th>Response body data format</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Get List of all movies</td>
+          <td>/movies</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>A JSON object holding data of all movies</td>
+        </tr>
+
+        <tr>
+          <td>Get data of a specific movie</td>
+          <td>/movies/[Movie title]</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>A JSON object holding data of a specific movie</td>
+        </tr>
+
+        <tr>
+          <td>Get data about a specific genre</td>
+          <td>/movies/genre/[Genre name]</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>A JSON object holding data about the genre</td>
+        </tr>
+
+        <tr>
+          <td>Get data about a director</td>
+          <td>/movies/directors/[Director Name]</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>A JSON object holding data about the director</td>
+        </tr>
+
+        <tr>
+          <td>Register a user</td>
+          <td>/users</td>
+          <td>POST</td>
+          <td>A JSON object holding data about the user to add, structured like:
+            <code>
+              {
+                name: "Kata Heff",
+                favoriteMovies: ["Blow", "Ocean's 11"]
+              }
+            </code></td>
+          <td>A JSON object holding data about the user added
+            <code>
+              { name: "Kata Heff", favoriteMovies: ["Blow", "Ocean's 11"] }
+            </code>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Update user name</td>
+          <td>/users/[ID]</td>
+          <td>PUT</td>
+          <td>A JSON object holding updated data about the user
+            <code>
+              { name: "Natu Hoff" }
+            </code>
+          </td>
+          <td>A JSON object holding data of updated user data
+            <code>
+              <code>
+                { name: "Natu Hoff", favoriteMovies: ["Blow", "Ocean's 11"] }
+              </code>
+            </code>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Add movie to favorite list</td>
+          <td>/users/[ID]/[Movie title]</td>
+          <td>POST</td>
+          <td>None</td>
+          <td>A JSON object holding data of updated user data
+            <code>
+              { name: "Natu Hoff", favoriteMovies: ["Blow", "Ocean's 11", "The Bucket List"] }
+            </code>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Remove movie from favorite list</td>
+          <td>/users/[ID]/[Movie title]</td>
+          <td>DELETE</td>
+          <td>None</td>
+          <td>A JSON object holding updated data about the user
+            <code>
+              { name: "Natu Hoff", favoriteMovies: ["Ocean's 11", "The Bucket List"] }
+            </code>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Deactivate a user account</td>
+          <td>/users/[ID]</td>
+          <td>DELETE</td>
+          <td>None</td>
+          <td>A text message indicating whether the user account was successfully deactivated</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
 </body>
 
 </html>
