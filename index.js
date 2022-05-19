@@ -4,6 +4,7 @@ const express = require('express'),
   morgan = require('morgan'),
   mongoose = require('mongoose'),
   Models = require('./models.js');
+const { json } = require('express/lib/response');
 
 const app = express(),
   Movies = Models.Movie,
@@ -14,161 +15,9 @@ mongoose.connect('mongodb://localhost:27017/myFlixDB', {
   useUnifiedTopology: true,
 });
 
-let topMovies = [
-  {
-    Title: 'Movie 1',
-    Description: 'description text',
-    Genre: {
-      Name: 'Drama',
-      Description: 'genre Drama description',
-    },
-    Director: {
-      Name: 'director name',
-      Bio: 'director bio',
-    },
-    ImageUrl: 'https://picsum.photos/200/300',
-    Featured: false,
-  },
-  {
-    Title: 'Movie 2',
-    Description: 'description text',
-    Genre: {
-      Name: 'Thriller',
-      Description: 'genre Thriller description',
-    },
-    Director: {
-      Name: 'director name',
-      Bio: 'director bio',
-    },
-    ImageUrl: 'https://picsum.photos/200/300',
-    Featured: false,
-  },
-  {
-    Title: 'Movie 3',
-    Description: 'description text',
-    Genre: {
-      Name: 'Action',
-      Description: 'genre Action description',
-    },
-    Director: {
-      Name: 'director name',
-      Bio: 'director bio',
-    },
-    ImageUrl: 'https://picsum.photos/200/300',
-    Featured: false,
-  },
-  {
-    Title: 'Movie 4',
-    Description: 'description text',
-    Genre: {
-      Name: 'Action',
-      Description: 'genre Action description',
-    },
-    Director: {
-      Name: 'director name',
-      Bio: 'director bio',
-    },
-    ImageUrl: 'https://picsum.photos/200/300',
-    Featured: false,
-  },
-  {
-    Title: 'Movie 5',
-    Description: 'description text',
-    Genre: {
-      Name: 'Adventure',
-      Description: 'genre Adventure description',
-    },
-    Director: {
-      Name: 'director name',
-      Bio: 'director bio',
-    },
-    ImageUrl: 'https://picsum.photos/200/300',
-    Featured: false,
-  },
-  {
-    Title: 'Movie 6',
-    Description: 'description text',
-    Genre: {
-      Name: 'Drama',
-      Description: 'genre Drama description',
-    },
-    Director: {
-      Name: 'director name',
-      Bio: 'director bio',
-    },
-    ImageUrl: 'https://picsum.photos/200/300',
-    Featured: false,
-  },
-  {
-    Title: 'Movie 7',
-    Description: 'description text',
-    Genre: {
-      Name: 'Adventure',
-      Description: 'genre Adventure description',
-    },
-    Director: {
-      Name: 'director name',
-      Bio: 'director bio',
-    },
-    ImageUrl: 'https://picsum.photos/200/300',
-    Featured: false,
-  },
-  {
-    Title: 'Movie 8',
-    Description: 'description text',
-    Genre: {
-      Name: 'Comedy',
-      Description: 'genre Comedy description',
-    },
-    Director: {
-      Name: 'director name',
-      Bio: 'director bio',
-    },
-    ImageUrl: 'https://picsum.photos/200/300',
-    Featured: false,
-  },
-  {
-    Title: 'Movie 9',
-    Description: 'description text',
-    Genre: {
-      Name: 'Adventure',
-      Description: 'genre Adventure description',
-    },
-    Director: {
-      Name: 'director name',
-      Bio: 'director bio',
-    },
-    ImageUrl: 'https://picsum.photos/200/300',
-    Featured: false,
-  },
-  {
-    Title: 'Movie 10',
-    Description: 'description text',
-    Genre: {
-      Name: 'Thriller',
-      Description: 'genre Thriller description',
-    },
-    Director: {
-      Name: 'director name',
-      Bio: 'director bio',
-    },
-    ImageUrl: 'https://picsum.photos/200/300',
-    Featured: false,
-  },
-];
+app.use(bodyParser.json());
 
-let users = [
-  {
-    id: 1,
-    name: 'Diego',
-    favoriteMovies: ['Movie 3'],
-  },
-  {
-    id: 2,
-    name: 'Natu',
-    favoriteMovies: ['Movie 1', 'Movie 5'],
-  },
-];
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(morgan('common'));
 
@@ -181,69 +30,152 @@ app.get('/', (req, res) => {
 
 // Return a list of ALL movies to the user
 app.get('/movies', (req, res) => {
-  res.json(topMovies);
+  Movies.find()
+    .then((movies) => {
+      res.status(201).json(movies);
+    })
+    .catch((err) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
 
 //Return data about a single movie by title to the user
-app.get('/movies/:title', (req, res) => {
-  res.json(
-    topMovies.find((movie) => {
-      return movie.Title === req.params.title;
+app.get('/movies/:Title', (req, res) => {
+  Movies.findOne({ Title: req.params.Title })
+    .then((movie) => {
+      res.json(movie);
     })
-  );
+    .catch((err) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
 
 // Return data about a genre by name/title (e.g., “Thriller”)
-app.get('/movies/genre/:genreName', (req, res) => {
-  res.json(
-    topMovies.find((movie) => {
-      return movie.Genre.Name === req.params.genreName;
-    }).Genre
-  );
+app.get('/movies/genre/:GenreName', (req, res) => {
+  Movies.findOne({ 'Genre.Name': req.params.GenreName })
+    .then((movie) => {
+      res.json(movie.Genre);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
 
 // Return data about a director by name
-app.get('/movies/directors/:directorName', (req, res) => {
-  res.json(
-    topMovies.find((movie) => {
-      return movie.Director.Name === req.params.directorName;
-    }).Director
-  );
+app.get('/movies/directors/:DirectorName', (req, res) => {
+  Movies.findOne({ 'Director.Name': req.params.DirectorName })
+    .then((movie) => {
+      res.json(movie.Director);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
 
 // --------- POST requests ---------
 // Register new users
 app.post('/users', (req, res) => {
-  res.send('new user created');
-  // const newUser = req.body;
-
-  // if (newUser.name) {
-  //   newUser.id = uuid.v4();
-  //   users.push(newUser);
-  //   res.send(newUser);
-  // }
+  Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+      if (user) {
+        return res.status(400).send(req.body.Usernmae + ' already exists');
+      } else {
+        Users.create({
+          Username: req.body.Username,
+          Password: req.body.Password,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday,
+        })
+          .then((user) => {
+            res.status(201).json(user);
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+          });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
 
 // Allow users to add a movie to their list of favorites
-app.post('/users/:id/:movieTitle', (req, res) => {
-  res.send('movie added to favorites');
+app.post('/users/:Username/movies/:MovieID', (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    { $push: { FavoriteMovies: req.params.MovieID } },
+    { new: true }
+  )
+    .then((addedMovie) => {
+      res.status(200).json(addedMovie);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
 
 // --------- PUT requests ---------
 // allow users to update user info
-app.put('/users/:id', (req, res) => {
-  res.send('User name updated');
+app.put('/users/:Username', (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $set: {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+      },
+    },
+    { new: true }
+  )
+    .then((updatedUser) => {
+      res.status(200).json(updatedUser);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
 
 // --------- DELETE requests ---------
 // Allow users to remove a movie from their list of favorites
-app.delete('/users/:id/:movieTitle', (req, res) => {
-  res.send('movie successfully removed from favorites');
+app.delete('/users/:Username/movies/:MovieID', (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    { $pull: { FavoriteMovies: req.params.MovieID } },
+    { new: true }
+  )
+    .then((addedMovie) => {
+      res.status(200).json(addedMovie);
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
 
 // Allow existing users to deregister
-app.delete('/users/:id', (req, res) => {
-  res.send('user account successfully deactivated');
+app.delete('/users/:Username', (req, res) => {
+  Users.findOneAndRemove({ Username: req.params.Username })
+    .then((user) => {
+      if (!user) {
+        res.status(400).send(req.params.Username + ' was not found.');
+      } else {
+        res.status(200).send(req.params.Username + ' was deleted.');
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
 });
 
 // Error handling
