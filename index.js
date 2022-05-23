@@ -3,8 +3,10 @@ const express = require('express'),
   uuid = require('uuid'),
   morgan = require('morgan'),
   mongoose = require('mongoose'),
-  Models = require('./models.js');
+  Models = require('./models.js'),
+  cors = require('cors');
 const { json } = require('express/lib/response');
+const { check, validationResult } = require('express-validator');
 
 const app = express(),
   Movies = Models.Movie,
@@ -18,6 +20,8 @@ mongoose.connect('mongodb://localhost:27017/myFlixDB', {
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cors());
 
 let auth = require('./auth')(app);
 const passport = require('passport');
@@ -98,32 +102,51 @@ app.get(
 
 // --------- POST requests ---------
 // Register new users
-app.post('/users', (req, res) => {
-  Users.findOne({ Username: req.body.Username })
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.Usernmae + ' already exists');
-      } else {
-        Users.create({
-          Username: req.body.Username,
-          Password: req.body.Password,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday,
-        })
-          .then((user) => {
-            res.status(201).json(user);
+app.post(
+  '/users',
+  [
+    check('Username', 'Username is required').isLength({ min: 5 }),
+    check(
+      'Username',
+      'Username contains non alphanumeric characters - not allowed.'
+    ).isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', ' Email does not appear to be valid').isEmail(),
+  ],
+  (req, res) => {
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    Users.findOne({ Username: req.body.Username })
+      .then((user) => {
+        if (user) {
+          return res.status(400).send(req.body.Usernmae + ' already exists');
+        } else {
+          Users.create({
+            Username: req.body.Username,
+            Password: hashedPassword,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday,
           })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
-          });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    });
-});
+            .then((user) => {
+              res.status(201).json(user);
+            })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send('Error: ' + error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
+  }
+);
 
 // Allow users to add a movie to their list of favorites
 app.post(
@@ -149,6 +172,15 @@ app.post(
 // allow users to update user info
 app.put(
   '/users/:Username',
+  [
+    check('Username', 'Username is required').isLength({ min: 5 }),
+    check(
+      'Username',
+      'Username contains non alphanumeric characters - not allowed.'
+    ).isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', ' Email does not appear to be valid').isEmail(),
+  ],
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     Users.findOneAndUpdate(
