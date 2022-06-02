@@ -31,136 +31,6 @@
       </thead>
       <tbody>
         <tr>
-          <td>Get List of all movies</td>
-          <td>/movies</td>
-          <td>GET</td>
-          <td>None</td>
-          <td>A JSON object holding data of all movies.</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td>
-            <textarea name="api documentation" id="DocsExample" cols="40" rows="10">
-[{
-  "Genre": {
-    "Name": "Crime",
-    "Description": "Crime films, in the broadest sense, is a film genre inspired by and analogous to the crime fiction literary genre. Films of this genre generaly involve various aspects of crime and its detection."
-  },
-  "Director": {
-    "Name": "Ted Demme",
-    "Bio": "He was a director and producer, known for Blow (2001), Beautiful Girls (1996) and A Decade Under the Influence (2003). He was married to Amanda Scheer-Demme.",
-    "Birth": "1963-10-26",
-    "Death": "2002-01-13"
-  },
-  "Actors": [],
-  "_id": "6283b0eeaee34258a192a58f",
-  "Title": "Blow",
-  "Description": "The story of how George Jung, along with the Medellin Cartel headed by Pablo Escobar, established the American cocaine market in the 1970s in the United States.",
-  "ImagePath": "https://www.imdb.com/title/tt0221027/mediaviewer/rm3904120320/?ref_=tt_ov_i",
-  "Featured": true
-}]
-            </textarea>
-          </td>
-        </tr>
-        
-        <tr>
-          <td>Get data of a specific movie</td>
-          <td>/movies/[Movie title]</td>
-          <td>GET</td>
-          <td>None</td>
-          <td>A JSON object holding data of a specific movie.</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            <textarea name="api documentation" id="DocsExample" cols="30" rows="5">
-/movies/Salt
-            </textarea>
-          </td>
-          <td></td>
-          <td></td>
-          <td>
-            <textarea name="api documentation" id="DocsExample" cols="40" rows="10">
-{
-  "Genre": {
-    "Name": "Action",
-    "Description": "Action film is a film genre in which the protagonist is thrust into a series of events that typically involve violence and physical feats."
-  },
-  "Director": {
-    "Name": "Phillip Noyce",
-    "Bio": "As a teenager, Phillip Noyce was introduced to underground films produced on shoestring budgets as well as mainstream American movies. In 1973 he was selected to attend the Australian National Film School in its inaugural year. Here, he made Castor and Pollux (1973) a 50 minute documentary which won the award for best Australian short film of 1974. Noyce's first professional film was the 50-minute docudrama God Knows Why, But It Works (1976) in 1975. This helped pave the way for his first feature, the road movie Backroads (1977) which starred Australian Aboriginal activist Gary Foley and iconic Australian actor Bill Hunter who would go on to appear in 2 other Noyce films. In 1978, he directed and co-wrote Newsfront (1978), which won Best Film, Best Director and Best Original Screenplay at the Australian Film Awards, as well as proving a huge commercial hit in Australia.",
-    "Birth": "1950-04-29"
-  },
-  "Actors": [],
-  "_id": "6283ba8baee34258a192a596",
-  "Title": "Salt",
-  "Description": "A CIA agent goes on the run after a defector accuses her of being a Russian spy.",
-  "ImagePath": "https://www.imdb.com/title/tt0944835/mediaviewer/rm683118080/?ref_=tt_ov_i",
-  "Featured": true
-}
-            </textarea>
-          </td>
-        </tr>
-
-        <tr>
-          <td>Get data about a specific genre</td>
-          <td>/movies/genre/[Genre name]</td>
-          <td>GET</td>
-          <td>None</td>
-          <td>A JSON object holding data about the genre.</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            <textarea name="api documentation" id="DocsExample" cols="30" rows="5">
-/movies/genre/Crime
-            </textarea>
-          </td>
-          <td></td>
-          <td></td>
-          <td>
-            <textarea name="api documentation" id="DocsExample" cols="40" rows="10">
-{
-  "Name": "Crime",
-  "Description": "Crime films, in the broadest sense, is a film genre inspired by and analogous to the crime fiction literary genre. Films of this genre generaly involve various aspects of crime and its detection."
-}
-            </textarea>
-          </td>
-        </tr>
-
-        <tr>
-          <td>Get data about a director</td>
-          <td>/movies/directors/[Director Name]</td>
-          <td>GET</td>
-          <td>None</td>
-          <td>A JSON object holding data about the director.</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            <textarea name="api documentation" id="DocsExample" cols="30" rows="5">
-/movies/directors/Simon%20West
-            </textarea>
-            <br>
-            "%20" represents a space character between the directors first and last name
-          </td>
-          <td></td>
-          <td></td>
-          <td>
-            <textarea name="api documentation" id="DocsExample" cols="40" rows="10">
-{
-  "Name": "Simon West",
-  "Bio": "Simon West is a British born and Hollywood based film director and producer. West is the only live action director ever whose first three 3 films all grossed over $100m at the US box office.",
-  "Birth": "1961-07-17"
-}
-            </textarea>
-          </td>
-        </tr>
-
-        <tr>
           <td>Register a user</td>
           <td>/users</td>
           <td>POST</td>
@@ -191,6 +61,40 @@
   "FavoriteMovies": [],
   "_id": "62877f44d782435009d9979e",
   "__v": 0
+}
+            </textarea>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Login</td>
+          <td>/login</td>
+          <td>POST</td>
+          <td>None</td>
+          <td>
+            A JSON object holding data about the user that logged in, including the created token.
+            <br>
+            The created token is used to identify the user for all upcoming actions as long as the session is running.
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>
+            <textarea name="api documentation" id="DocsExample" cols="40" rows="10">
+{
+  "user": {
+      "_id": "629923c8a7687219b06be3c0",
+      "Username": "JDepp",
+      "Password": "$2b$10$lQGk2w5uMw7vitedT5559eh5UiTD.FLvfoSXpREprrpY0oIKfROfa",
+      "Email": "jdepp@email.com",
+      "Birthday": "1999-10-10T00:00:00.000Z",
+      "FavoriteMovies": [],
+      "__v": 0
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Mjk5MjNjOGE3Njg3MjE5YjA2YmUzYzAiLCJVc2VybmFtZSI6IkpEZXBwIiwiUGFzc3dvcmQiOiIkMmIkMTAkbFFHazJ3NXVNdzd2aXRlZFQ1NTU5ZWg1VWlURC5GTHZmb1NYcFJFcHJycFkwb0lLZlJPZmEiLCJFbWFpbCI6ImpkZXBwQGVtYWlsLmNvbSIsIkJpcnRoZGF5IjoiMTk5OS0xMC0xMFQwMDowMDowMC4wMDBaIiwiRmF2b3JpdGVNb3ZpZXMiOltdLCJfX3YiOjAsImlhdCI6MTY1NDIwMzM2MywiZXhwIjoxNjU0ODA4MTYzLCJzdWIiOiJKRGVwcCJ9.UDUYKVKLkTh0N5c0Ks45UYeCHHnbkC35_np7HQiG9BE"
 }
             </textarea>
           </td>
@@ -328,6 +232,136 @@ __________________________________________
 ** When removing an unexisting user: **
 
 Diego was not found.
+            </textarea>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Get List of all movies</td>
+          <td>/movies</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>A JSON object holding data of all movies.</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>
+            <textarea name="api documentation" id="DocsExample" cols="40" rows="10">
+[{
+  "Genre": {
+    "Name": "Crime",
+    "Description": "Crime films, in the broadest sense, is a film genre inspired by and analogous to the crime fiction literary genre. Films of this genre generaly involve various aspects of crime and its detection."
+  },
+  "Director": {
+    "Name": "Ted Demme",
+    "Bio": "He was a director and producer, known for Blow (2001), Beautiful Girls (1996) and A Decade Under the Influence (2003). He was married to Amanda Scheer-Demme.",
+    "Birth": "1963-10-26",
+    "Death": "2002-01-13"
+  },
+  "Actors": [],
+  "_id": "6283b0eeaee34258a192a58f",
+  "Title": "Blow",
+  "Description": "The story of how George Jung, along with the Medellin Cartel headed by Pablo Escobar, established the American cocaine market in the 1970s in the United States.",
+  "ImagePath": "https://www.imdb.com/title/tt0221027/mediaviewer/rm3904120320/?ref_=tt_ov_i",
+  "Featured": true
+}]
+            </textarea>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>Get data of a specific movie</td>
+          <td>/movies/[Movie title]</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>A JSON object holding data of a specific movie.</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <textarea name="api documentation" id="DocsExample" cols="30" rows="5">
+/movies/Salt
+            </textarea>
+          </td>
+          <td></td>
+          <td></td>
+          <td>
+            <textarea name="api documentation" id="DocsExample" cols="40" rows="10">
+{
+  "Genre": {
+    "Name": "Action",
+    "Description": "Action film is a film genre in which the protagonist is thrust into a series of events that typically involve violence and physical feats."
+  },
+  "Director": {
+    "Name": "Phillip Noyce",
+    "Bio": "As a teenager, Phillip Noyce was introduced to underground films produced on shoestring budgets as well as mainstream American movies. In 1973 he was selected to attend the Australian National Film School in its inaugural year. Here, he made Castor and Pollux (1973) a 50 minute documentary which won the award for best Australian short film of 1974. Noyce's first professional film was the 50-minute docudrama God Knows Why, But It Works (1976) in 1975. This helped pave the way for his first feature, the road movie Backroads (1977) which starred Australian Aboriginal activist Gary Foley and iconic Australian actor Bill Hunter who would go on to appear in 2 other Noyce films. In 1978, he directed and co-wrote Newsfront (1978), which won Best Film, Best Director and Best Original Screenplay at the Australian Film Awards, as well as proving a huge commercial hit in Australia.",
+    "Birth": "1950-04-29"
+  },
+  "Actors": [],
+  "_id": "6283ba8baee34258a192a596",
+  "Title": "Salt",
+  "Description": "A CIA agent goes on the run after a defector accuses her of being a Russian spy.",
+  "ImagePath": "https://www.imdb.com/title/tt0944835/mediaviewer/rm683118080/?ref_=tt_ov_i",
+  "Featured": true
+}
+            </textarea>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Get data about a specific genre</td>
+          <td>/movies/genre/[Genre name]</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>A JSON object holding data about the genre.</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <textarea name="api documentation" id="DocsExample" cols="30" rows="5">
+/movies/genre/Crime
+            </textarea>
+          </td>
+          <td></td>
+          <td></td>
+          <td>
+            <textarea name="api documentation" id="DocsExample" cols="40" rows="10">
+{
+  "Name": "Crime",
+  "Description": "Crime films, in the broadest sense, is a film genre inspired by and analogous to the crime fiction literary genre. Films of this genre generaly involve various aspects of crime and its detection."
+}
+            </textarea>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Get data about a director</td>
+          <td>/movies/directors/[Director Name]</td>
+          <td>GET</td>
+          <td>None</td>
+          <td>A JSON object holding data about the director.</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <textarea name="api documentation" id="DocsExample" cols="30" rows="5">
+/movies/directors/Simon%20West
+            </textarea>
+            <br>
+            "%20" represents a space character between the directors first and last name
+          </td>
+          <td></td>
+          <td></td>
+          <td>
+            <textarea name="api documentation" id="DocsExample" cols="40" rows="10">
+{
+  "Name": "Simon West",
+  "Bio": "Simon West is a British born and Hollywood based film director and producer. West is the only live action director ever whose first three 3 films all grossed over $100m at the US box office.",
+  "Birth": "1961-07-17"
+}
             </textarea>
           </td>
         </tr>
