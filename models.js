@@ -41,5 +41,4 @@ let Movie = mongoose.model('Movie', movieSchema);
 let User = mongoose.model('User', userSchema);
 
 // Exporting the models
-module.exports.Movie = Movie;
-module.exports.User = User;
+module.exports = { Movie, User };
