@@ -5,6 +5,8 @@ const express = require('express'),
   mongoose = require('mongoose'),
   Models = require('./models.js'),
   cors = require('cors');
+const passport = require('passport');
+require('./passport');
 const { json } = require('express/lib/response');
 const { check, validationResult } = require('express-validator');
 
@@ -42,9 +44,7 @@ app.use(
   })
 );
 
-let auth = require('./auth')(app);
-const passport = require('passport');
-require('./passport');
+require('./auth')(app);
 
 app.use(morgan('common'));
 
@@ -172,15 +172,26 @@ app.post(
   '/users/:Username/movies/:MovieID',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    Users.findOneAndUpdate(
-      { Username: req.params.Username },
-      { $push: { FavoriteMovies: req.params.MovieID } },
-      { new: true }
-    )
-      .then((addedMovie) => {
-        res.status(201).json(addedMovie);
+    Movies.findById(req.params.MovieID)
+      .then((movie) => {
+        if (movie) {
+          Users.findOneAndUpdate(
+            { Username: req.params.Username },
+            { $push: { FavoriteMovies: req.params.MovieID } },
+            { new: true }
+          )
+            .then((addedMovie) => {
+              res.status(201).json(addedMovie);
+            })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send('Error: ' + error);
+            });
+        } else {
+          res.status(404).send('Movie was not found.');
+        }
       })
-      .catch((error) => {
+      .catch((e) => {
         console.error(error);
         res.status(500).send('Error: ' + error);
       });
