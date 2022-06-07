@@ -28,7 +28,10 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-let allowedOrigins = ['https://motionpics.herokuapp.com/'];
+let allowedOrigins = [
+  'http://localhost:1234',
+  'https://motionpics.herokuapp.com/',
+];
 app.use(
   cors({
     origin: (origin, callback) => {
